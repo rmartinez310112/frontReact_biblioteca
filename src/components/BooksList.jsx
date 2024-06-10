@@ -7,7 +7,7 @@ import { BorderColor, Delete } from "@mui/icons-material";
 
 const BooksList = () => {
     const dispatch = useDispatch();
-    const { bookslist } = useSelector(state => state.books);
+    const { bookslist, categorys } = useSelector(state => state.books);
     
      useEffect(() => {
         dispatch(setBooksT())
@@ -17,6 +17,8 @@ const BooksList = () => {
         // console.log(id);
         dispatch(deleteBooksT(id))
     }
+
+    // console.log(categorys);
 
   return (
     <div>
@@ -48,13 +50,13 @@ const BooksList = () => {
                 <TableRow key={book.idLibro}>
                     <TableCell>{book.idLibro}</TableCell>
                     <TableCell>{book.titulo}</TableCell>
-                    <TableCell>{book.oCategoria.nombre}</TableCell>
+                    <TableCell>{book.idCategoria}</TableCell>
                     <TableCell>{book.autor}</TableCell>
                     <TableCell>{book.fechaPublicacion}</TableCell>
                     <TableCell>{book.cantidad}</TableCell>
                     <TableCell>
                         <Link to={`/edit-book/${book.idLibro}`}> <IconButton><BorderColor /></IconButton></Link>
-                        <button onClick={ () => handleDelete(book.idLibro)}><IconButton><Delete /></IconButton></button>
+                        <Link onClick={ () => handleDelete(book.idLibro)}><IconButton><Delete /></IconButton></Link>
                     </TableCell>
                 </TableRow>  
                 ))}

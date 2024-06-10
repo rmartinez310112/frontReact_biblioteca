@@ -14,11 +14,12 @@ const LoansList = () => {
         dispatch(setLoansT())
     }, []);
 
-    console.log("loan:", loans);
+    // console.log("loan:", loans);
 
     const handleDelete = (id) =>{
         // console.log(id);
          dispatch(deleteLoansT(id))
+         dispatch(setLoansT())
     }
 
   return (
@@ -50,7 +51,7 @@ const LoansList = () => {
                     <TableCell>{loan.fechaDevolucion}</TableCell>
                     <TableCell>{loan.estadoPrestamo}</TableCell>
                     <TableCell>
-                        <Button onClick={() => handleDelete(loan.idPrestamo)}>Devolver</Button>
+                        <Button disabled={loan.estadoPrestamo =="Devuelto" ? true : false}   onClick={() => handleDelete(loan.idPrestamo)}>Devolver</Button>
                     </TableCell>
                 </TableRow>  
                 ))}

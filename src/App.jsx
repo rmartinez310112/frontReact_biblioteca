@@ -13,9 +13,9 @@ const App = () => {
   return (
     
     <AppTheme >
-      <AppLayout>
       <BrowserRouter>
-    <Routes>
+      <AppLayout>
+      <Routes>
       <Route path="/" element={<BooksList />}/>
       <Route path="/create-book" element={<BookForm />}/>
       <Route path="/edit-book/:id" element={<BookForm />}/>
@@ -23,8 +23,8 @@ const App = () => {
       <Route path="/loans" element={<LoansList />}/>
       <Route path="/create-loan" element={<LoansForm />}/>
     </Routes>
-    </BrowserRouter>
       </AppLayout>
+    </BrowserRouter>
     </AppTheme>
     
   )

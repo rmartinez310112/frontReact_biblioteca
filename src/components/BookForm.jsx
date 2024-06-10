@@ -2,14 +2,14 @@ import { Fragment, useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { addBooksT, editBooksT } from "../features/books/thunks";
 import { useNavigate, useParams } from "react-router-dom";
-import { Box, Button, TextField } from "@mui/material";
+import { Box, Button, FormControl, InputLabel, MenuItem, Select, TextField } from "@mui/material";
 
 
 
 const BookForm = () => {
 
     const [book, setBook] = useState({
-        idcategoria: 1,
+        idcategoria: null,
         titulo:'',
         autor:'',
         fechapublicacion:'',
@@ -19,7 +19,7 @@ const BookForm = () => {
     const dispatch = useDispatch();
     const navigate =useNavigate();
     const params = useParams();
-    const { bookslist} = useSelector((state) => state.books);
+    const { bookslist, categorys} = useSelector((state) => state.books);
 
    
    const handleChange = e => {
@@ -29,14 +29,19 @@ const BookForm = () => {
     });
    }
 
+   const handleChangeS = e => {
+    // console.log(e.target.name, e.target.value)
+    setBook({ ...book, idcategoria: e.target.value});
+   }
+
    const handleSubmit = (e) => {
     e.preventDefault();
     if(params.id){
         dispatch(editBooksT({ ...book, id:params.id}));
     }else{
         dispatch(addBooksT(book))
-        navigate('/')
     }
+    navigate('/')
    }
 
    function encuentraId(listado) {
@@ -57,7 +62,7 @@ const BookForm = () => {
   return (
     <Fragment>
       <Box
-      height={400}
+      height={500}
       width={500}
       my={4}
       display="flex"
@@ -74,16 +79,36 @@ const BookForm = () => {
       </div>
       <div>
       <form onSubmit={handleSubmit}>
-        <TextField type="text" label="Titulo" variant="outlined" name="titulo" onChange={handleChange}  value={book.titulo}/>
+      <FormControl sx={{ m: 1, minWidth: 200 }}>
+      <TextField type="text" label="Titulo" variant="outlined" name="titulo" onChange={handleChange}  value={book.titulo}/>
+      </FormControl>
+        <FormControl sx={{ m: 1, minWidth: 200 }}>
+          <InputLabel id="demo-simple-select-helper-label">Categoria</InputLabel>
+          <Select
+            labelId="demo-simple-select-helper-label"
+            id="demo-simple-select-helper"
+             value={book.idcategoria}
+            label="Categoria"
+            onChange={handleChangeS}
+          >
+            {categorys.map((cat) => (
+            <MenuItem key={cat.IdCategoria} value= {cat.IdCategoria}>{cat.Nombre}</MenuItem>
+          ))}
+          </Select>
+        </FormControl>
+        <FormControl sx={{ m: 1, minWidth: 200 }}>
         <TextField type="text" label="Autor" variant="outlined" name="autor" onChange={handleChange}  value={book.autor}/>
-        <TextField type="date" label="Fecha Publicacion" variant="outlined" name="fechapublicacion" onChange={handleChange}  value={book.fechapublicacion}/>
+        </FormControl>
+        <FormControl sx={{ m: 1, minWidth: 200 }}>
+          <label>Fecha de Publicacion</label>
+        <TextField type="date" variant="outlined" name="fechapublicacion" onChange={handleChange}  value={book.fechapublicacion}/>
+        </FormControl>
+        <FormControl sx={{ m: 1, minWidth: 200 }}>
         <TextField type="number" label="Cantidad" variant="outlined" name="cantidad" onChange={handleChange}  value={book.cantidad}/>
-        {/* <input type="text" name="titulo" onChange={handleChange}  value={book.titulo}/> */}
-        {/* <input type="text" name="autor" onChange={handleChange} value={book.autor}/>
-        <input type="date" name="fechapublicacion" onChange={handleChange} value={book.fechapublicacion}/>
-        <input type="number" name="cantidad" onChange={handleChange} value={book.cantidad}/> */}
-        
+        </FormControl>
+        <FormControl sx={{ m: 1, minWidth: 200 }}>
         <Button type="submit" variant="contained" color="success">Agregar Libro</Button>
+        </FormControl>
         
         
       </form>

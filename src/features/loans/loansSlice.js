@@ -1,30 +1,43 @@
 import { createSlice } from "@reduxjs/toolkit";
 
+const usuarios = [
+   {
+      Id:1,
+      Nombres:"Rodrigo",
+      Apellidos:"Mendez Espinoza",
+   },
+   {
+      Id:2,
+      Nombres:"Adriana",
+      Apellidos:"Suarez Sanchez"
+   },
+   {
+      Id:3,
+      Nombres:"Rosa Maria",
+      Apellidos:"Hurtado Flores"
+   }
+]
+
 export const loansSlice = createSlice({
     name:'loans',
     initialState: {
-        loanslist:[]
+        loanslist:[],
+        oUsuarios: usuarios,
+        mensajeError:""
+        
     },
     reducers: {
        setLoans:(state, {payload}) =>{
         state.loanslist= payload
+      //   state.oUsuarios=usuarios
        },
-       addLoans:(state, {payload}) => {
+       addLoans:(state, payload) => {
         state.loanslist.push(payload);
        },
-    //    editLoans:(state, {payload}) =>{
-    //     console.log(payload);
-    //         const { idLibro, titulo, autor, fechaPublicacion, cantidad, idCategoria } = payload;
-    //         const foundBook = state.bookslist.find((book) => book.idLibro === idLibro);
-    //         console.log("foundtask:", foundBook);
-    //         if (foundBook) {
-    //             foundBook.idLibro = idLibro;
-    //             foundBook.titulo = titulo;
-    //             foundBook.autor = autor;
-    //             foundBook.fechaPublicacion = fechaPublicacion;
-    //             foundBook.cantidad = cantidad;
-    //         }
-    //       },
+       ErrorLoans:(state, {payload}) => {
+         console.log("error slice:", payload)
+         state.mensajeError = payload
+        },
        deleteLoans:(state,{payload}) =>{
          const loanFound = state.loanslist.find(loan => loan.idPrestamo === payload)
          if(loanFound){
@@ -35,4 +48,4 @@ export const loansSlice = createSlice({
 });
 
 // Action creators are generated for each case reducer function
-export const { setLoans, addLoans, deleteLoans} = loansSlice.actions;
+export const { setLoans, addLoans, deleteLoans,ErrorLoans} = loansSlice.actions;

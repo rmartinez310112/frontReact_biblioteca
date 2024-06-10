@@ -2,14 +2,15 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import { addLoansT } from "../features/loans/thunks";
 import { Fragment, useState } from "react";
-import { Box, Button, TextField } from "@mui/material";
+import { Alert, Autocomplete, Box, Button, FormControl, Grid, InputLabel, MenuItem, Select, TextField } from "@mui/material";
 
 
 const LoansForm = () => {
     const navigate =useNavigate();
     const params = useParams();
     const dispatch = useDispatch();
-    const loans = useSelector((state) => state.loans);
+    const {oUsuarios, mensajeError} = useSelector((state) => state.loans);
+    const { bookslist} = useSelector((state) => state.books);
 
    const [loan, setLoans] = useState({
     idUsuarioBiblioteca:null,
@@ -20,17 +21,32 @@ const LoansForm = () => {
    })
 
    const handleChange = e => {
-    // console.log(e.target.name, e.target.value)
-    setLoans({
-        ...loan,[e.target.name]: e.target.value,
-    });
+    setLoans({ ...loan, idUsuarioBiblioteca: e.target.value});
    }
+
+   const handleChangeL = e => {
+     setLoans({ ...loan, idLibro: e.target.value});
+  }
+
 
    const handleSubmit = (e) => {
     e.preventDefault();
-        dispatch(addLoansT(loan))
-        navigate('/loans')
+    mensajeError='';
+         dispatch(addLoansT(loan))
+          
+         if(mensajeError == ""){
+          navigate('/loans')
+         }else{
+          console.log("este es el mensaje:",mensajeError);
+         }
+         
    }
+
+//    useEffect(() => {
+//     if
+// }, []);
+
+  // console.log(bookslist);
 
   return (
 
@@ -53,10 +69,49 @@ const LoansForm = () => {
       </div>
       <div>
       <form onSubmit={handleSubmit}>
-        <TextField type="text" label="Usuario" variant="outlined" name="idUsuarioBiblioteca" onChange={handleChange} />
-        <TextField type="text" label="Libro" variant="outlined" name="idLibro" onChange={handleChange} />
+      
+      <FormControl sx={{ m: 1, minWidth: 200 }}>
+          <InputLabel id="demo-simple-select-helper-label">Usuario</InputLabel>
+          <Select
+            labelId="demo-simple-select-helper-label"
+            id="demo-simple-select-helper"
+            value={loan.idUsuarioBiblioteca}
+            label="Usuario"
+            onChange={handleChange}
+            
+          >
+            {oUsuarios.map((usua) => (
+            <MenuItem key={usua.Id} value= {usua.Id}>{usua.Nombres} {usua.Apellidos}</MenuItem>
+          ))}
+          </Select>
+        </FormControl>
+      <FormControl sx={{ m: 1, minWidth: 200 }}>
+          <InputLabel id="demo-simple-select-helper-label1">Libro a Prestar</InputLabel>
+          <Select
+            labelId="demo-simple-select-helper-label1"
+            id="demo-simple-select-helper1"
+            value={loan.idLibro}
+            label="Libro"
+            onChange={handleChangeL}
+          >
+            {bookslist.map((book) => (
+            <MenuItem key={book.idLibro} value= {book.idLibro}>{book.titulo}</MenuItem>
+          ))}
+          </Select>
+        </FormControl>
+      <FormControl sx={{ m: 1, minWidth: 200 }}>
+        <Button type="submit" variant="contained" color="success">Prestar Libro!</Button>
+      </FormControl>
+
+
+      <Grid 
+                item 
+                xs={ 12 }
+                display={ !mensajeError ? 'none': '' }
+              >
+                <Alert display={!mensajeError ? 'none' : ''} severity='error'>{ mensajeError }</Alert>
+        </Grid>
         
-        <Button type="submit" variant="contained" color="success">Agregar Prestamo</Button>
         
         
       </form>
