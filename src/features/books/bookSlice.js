@@ -47,7 +47,7 @@ export const bookSlice = createSlice({
        setCategory:(state, {payload}) =>{
         state.oCategoria= payload
        },
-       addBook:(state, payload) => {
+       addBook:(state, {payload}) => {
         // console.log(payload);
         state.bookslist.push(payload);
        },
@@ -57,7 +57,7 @@ export const bookSlice = createSlice({
             // console.log("foundbook:", foundBook);
             if (foundBook) {
                 foundBook.idLibro = idLibro;
-                foundBook.idcategoria = idCategoria
+                foundBook.idCategoria = idCategoria
                 foundBook.titulo = titulo;
                 foundBook.autor = autor;
                 foundBook.fechaPublicacion = fechaPublicacion;

@@ -3,6 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { addLoansT } from "../features/loans/thunks";
 import { Fragment, useState } from "react";
 import { Alert, Autocomplete, Box, Button, FormControl, Grid, InputLabel, MenuItem, Select, TextField } from "@mui/material";
+import { ElectricalServices } from "@mui/icons-material";
 
 
 const LoansForm = () => {
@@ -11,10 +12,11 @@ const LoansForm = () => {
     const dispatch = useDispatch();
     const {oUsuarios, mensajeError} = useSelector((state) => state.loans);
     const { bookslist} = useSelector((state) => state.books);
+    const [errorL, setErrorL] = useState("");
 
    const [loan, setLoans] = useState({
-    idUsuarioBiblioteca:null,
-    idLibro:null,
+    idUsuarioBiblioteca:0,
+    idLibro:0,
     fechaPrestamo:null,
     fechaDevolucion:null,
     estadoPrestamo:'Prestado'
@@ -30,17 +32,15 @@ const LoansForm = () => {
 
 
    const handleSubmit = (e) => {
-    e.preventDefault();
-    mensajeError='';
-         dispatch(addLoansT(loan))
-          
-         if(mensajeError == ""){
-          navigate('/loans')
-         }else{
-          console.log("este es el mensaje:",mensajeError);
-         }
-         
-   }
+      e.preventDefault();
+      try {
+        dispatch(addLoansT(loan))
+        navigate('/loans')
+      } catch (error) {
+        console.log("error desde catch:", error)
+      }
+     }
+    
 
 //    useEffect(() => {
 //     if

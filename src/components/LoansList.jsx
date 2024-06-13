@@ -8,18 +8,20 @@ import { Button, Paper, TableCell, TableContainer, TableRow } from "@mui/materia
 const LoansList = () => {
 
   const dispatch = useDispatch();
-    const loans = useSelector(state => state.loans);
+    const {loanslist, oUsuarios} = useSelector(state => state.loans);
+    const {bookslist} = useSelector((state) => state.books);
     
      useEffect(() => {
         dispatch(setLoansT())
+        console.log(oUsuarios);
     }, []);
 
     // console.log("loan:", loans);
 
     const handleDelete = (id) =>{
-        // console.log(id);
-         dispatch(deleteLoansT(id))
-         dispatch(setLoansT())
+        // console.log(loans);
+          dispatch(deleteLoansT(id))
+        //  dispatch(setLoansT())
     }
 
   return (
@@ -42,13 +44,13 @@ const LoansList = () => {
             <TableCell>Estado</TableCell>
             <TableCell>Accion</TableCell>
             </TableRow>
-            {loans.loanslist.map((loan) => (
+            {loanslist.map((loan) => (
                 <TableRow key={loan.idPrestamo}>
                     <TableCell>{loan.idPrestamo}</TableCell>
-                    <TableCell>{loan.idUsuarioBiblioteca}</TableCell>
+                    <TableCell>{loan.idUsuarioBiblioteca }</TableCell>
                     <TableCell>{loan.idLibro}</TableCell>
-                    <TableCell>{loan.fechaPrestamo}</TableCell>
-                    <TableCell>{loan.fechaDevolucion}</TableCell>
+                    <TableCell>{new Date(loan.fechaPrestamo).toISOString().slice(0, 10)}</TableCell>
+                    <TableCell>{loan.estadoPrestamo == "Prestado" ? "" : new Date(loan.fechaDevolucion).toISOString().slice(0, 10)}</TableCell>
                     <TableCell>{loan.estadoPrestamo}</TableCell>
                     <TableCell>
                         <Button disabled={loan.estadoPrestamo =="Devuelto" ? true : false}   onClick={() => handleDelete(loan.idPrestamo)}>Devolver</Button>

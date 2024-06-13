@@ -9,10 +9,10 @@ import { Box, Button, FormControl, InputLabel, MenuItem, Select, TextField } fro
 const BookForm = () => {
 
     const [book, setBook] = useState({
-        idcategoria: null,
+        idCategoria: 0,
         titulo:'',
         autor:'',
-        fechapublicacion:'',
+        fechaPublicacion:'',
         cantidad:0
        })
 
@@ -23,22 +23,25 @@ const BookForm = () => {
 
    
    const handleChange = e => {
-    // console.log(e.target.name, e.target.value)
     setBook({
         ...book,[e.target.name]: e.target.value,
     });
+    console.log(book);
    }
 
    const handleChangeS = e => {
     // console.log(e.target.name, e.target.value)
-    setBook({ ...book, idcategoria: e.target.value});
+    setBook({ ...book, idCategoria: e.target.value});
+    // setBook({ ...book, oCategoria: categorys.find((cat) => cat.idCategoria == book.idCategoria )});
    }
 
    const handleSubmit = (e) => {
     e.preventDefault();
     if(params.id){
         dispatch(editBooksT({ ...book, id:params.id}));
+        console.log(book);
     }else{
+      // console.log(book);
         dispatch(addBooksT(book))
     }
     navigate('/')
@@ -87,7 +90,7 @@ const BookForm = () => {
           <Select
             labelId="demo-simple-select-helper-label"
             id="demo-simple-select-helper"
-             value={book.idcategoria}
+             value={book.idCategoria}
             label="Categoria"
             onChange={handleChangeS}
           >
@@ -101,7 +104,7 @@ const BookForm = () => {
         </FormControl>
         <FormControl sx={{ m: 1, minWidth: 200 }}>
           <label>Fecha de Publicacion</label>
-        <TextField type="date" variant="outlined" name="fechapublicacion" onChange={handleChange}  value={book.fechapublicacion}/>
+        <TextField type="date" variant="outlined" name="fechaPublicacion" onChange={handleChange}  value={book.fechaPublicacion}/>
         </FormControl>
         <FormControl sx={{ m: 1, minWidth: 200 }}>
         <TextField type="number" label="Cantidad" variant="outlined" name="cantidad" onChange={handleChange}  value={book.cantidad}/>

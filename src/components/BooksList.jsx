@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from "react-redux"
 import { deleteBooksT, setBooksT } from "../features/books/thunks";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { IconButton, Paper, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
 import { BorderColor, Delete } from "@mui/icons-material";
@@ -8,6 +8,8 @@ import { BorderColor, Delete } from "@mui/icons-material";
 const BooksList = () => {
     const dispatch = useDispatch();
     const { bookslist, categorys } = useSelector(state => state.books);
+    const [categoria,setCategoria] = useState();
+    
     
      useEffect(() => {
         dispatch(setBooksT())
@@ -50,7 +52,7 @@ const BooksList = () => {
                 <TableRow key={book.idLibro}>
                     <TableCell>{book.idLibro}</TableCell>
                     <TableCell>{book.titulo}</TableCell>
-                    <TableCell>{book.idCategoria}</TableCell>
+                    <TableCell>{ categorys.find(x => x.IdCategoria == book.idCategoria).Nombre}</TableCell>
                     <TableCell>{book.autor}</TableCell>
                     <TableCell>{book.fechaPublicacion}</TableCell>
                     <TableCell>{book.cantidad}</TableCell>

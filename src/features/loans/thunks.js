@@ -1,3 +1,4 @@
+import { AxiosError } from "axios";
 import { apiData } from "../../api/apiData";
 import { ErrorLoans, addLoans, deleteLoans, setLoans } from "./loansSlice";
 
@@ -12,14 +13,14 @@ export const setLoansT = () => {
 
 export const addLoansT = (loan) => {
     return async (dispatch, getState) => {
-        
-        const resp = await apiData.post('/Loan/Guardar', loan).catch(error => {
-            dispatch( ErrorLoans(error.response.data))
-          });
-
-        
-        dispatch( addLoans({ idPrestamo: resp.data}, loan ))
-        dispatch( ErrorLoans(""))
+        try {
+            const resp = await apiData.post('/Loan/Guardar', loan)
+            dispatch( addLoans({ idPrestamo: resp.data}, loan ))
+        } catch (error) {
+            dispatch(ErrorLoans(error.response.data))
+             throw error.response.data
+            
+        }
            
     }
 }
@@ -27,7 +28,7 @@ export const addLoansT = (loan) => {
 export const deleteLoansT = (id) => {
     return async (dispatch, getState) => {
 
-      const result = await apiData.put(`/Loan/Devolver/${id}`);
+       const result = await apiData.put(`/Loan/Devolver/${id}`);
 
        dispatch( deleteLoans(id))
     }
